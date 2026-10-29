@@ -1,0 +1,39 @@
+# GitHub Actions secrets (Settings → Secrets and variables → Actions):
+#   DEPLOY_HOST     — droplet IP (147.182.132.102)
+#   DEPLOY_USER     — deploy
+#   DEPLOY_SSH_KEY  — private key that matches the deploy user's authorized_keys
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy holding page
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -H "$DEPLOY_HOST" >> ~/.ssh/known_hosts
+          rsync -az --chmod=644 index.html qr.jpg \
+            "$DEPLOY_USER@$DEPLOY_HOST:/var/www/flooff/"
+          ssh "$DEPLOY_USER@$DEPLOY_HOST" 'sudo nginx -t && sudo systemctl reload nginx'
+
+      - name: Verify site
+        run: |
+          curl -fsS --retry 3 --retry-delay 2 http://147.182.132.102/ \
+            | grep -q "Pet Butler"
+          echo "Site is live"
