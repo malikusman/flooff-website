@@ -1318,6 +1318,38 @@
     .band-cap{left:14px;bottom:14px;font-size:12px;padding:9px 15px}
   }
 
+
+  /* ===== v15: mobile fit (nothing wider than the screen) ===== */
+  @media(max-width:1100px){
+    .trust-grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:720px){
+    /* header: logo + WhatsApp button; section links live in the footer */
+    nav.links{display:none}
+    .nav-in{padding:6px 6px 6px 14px}
+    .brand-logo{height:38px}
+    .btn-nav{padding:0 14px}
+    /* hero: size Duke from the stage width so he never overhangs the screen */
+    .hero-stage{height:auto;aspect-ratio:700/740}
+    .hero{padding-bottom:100px}
+    .trust-grid{grid-template-columns:1fr}
+    .cities-head{padding:0 20px}
+    .fnd-sun{width:54px;height:54px;right:18px;top:18px}
+    .t-sky h3{padding-right:60px}
+    /* newsletter: stack doodle, copy and form */
+    .loop-row{grid-template-columns:1fr;gap:18px}
+    .loop-row .news-form{flex-direction:column;align-items:stretch;gap:12px}
+    .loop-row .news-form input{width:100%}
+    .loop-row .news-form .btn-gold{margin-left:0!important;justify-content:center}
+    .foot-col a{padding:6px 0}
+    .chat-bub{font-size:12.5px;padding:11px 14px}
+    .cb-user{right:0}
+  }
+  @media(max-width:360px){
+    .brand-logo{height:32px}
+    .btn-nav{font-size:12.5px;padding:0 12px}
+  }
+
 </style>
 </head>
 <body>

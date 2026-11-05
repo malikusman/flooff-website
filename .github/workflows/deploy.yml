@@ -34,6 +34,6 @@ jobs:
 
       - name: Verify site
         run: |
-          curl -fsS --retry 3 --retry-delay 2 http://147.182.132.102/ \
+          curl -fsS --retry 3 --retry-delay 2 https://petbutler.flooff.me/ \
             | grep -q "Pet Butler"
           echo "Site is live"
